@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET", "")
+SECRET_KEY = os.environ.get("DJANGO_SECRET", "bad")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["0.0.0.0"]
+ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOST", "0.0.0.0")]
 
 # Application definition
 
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'drf_yasg',
-
+    'whitenoise.runserver_nostatic',
     'allauth',
     'allauth.account',
     'rest_auth',
@@ -58,6 +58,7 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -91,11 +92,24 @@ WSGI_APPLICATION = 'Bot_manager.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.environ.get("POSTGRES_DB", os.path.join(BASE_DIR, "db.sqlite3")),
+        "USER": os.environ.get("POSTGRES_USER", "user"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "password"),
+        "HOST": os.environ.get("POSTGRES_HOST", "http://127.0.0.1"),
+        "PORT": os.environ.get("POSTGRES_PORT", 5432),
     }
 }
+
+_TELEGRAM_BOT_SERVER_HOST = os.environ.get('TELEGRAM_BOT_SERVER_HOST', 'http://127.0.0.1')
+_TELEGRAM_BOT_SERVER_PORT = os.environ.get('TELEGRAM_BOT_SERVER_PORT', 8081)
+
+TELEGRAM_BOT_SERVER_URL = f"{_TELEGRAM_BOT_SERVER_HOST}:{_TELEGRAM_BOT_SERVER_PORT}/"
+
+_WEBHOOK_HOST = os.environ.get('WEBHOOK_HOST', 'http://127.0.0.1')
+_WEBHOOK_PORT = os.environ.get('WEBHOOK_PORT', 8000)
+WEBHOOK_URL = f"{_WEBHOOK_HOST}:{_WEBHOOK_PORT}/bot/"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -133,7 +147,6 @@ SITE_ID = 1
 ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = "none"
 
-
 REST_REGISTRATION = {
     'REGISTER_VERIFICATION_ENABLED': False,
     'RESET_PASSWORD_VERIFICATION_ENABLED': False,
@@ -141,19 +154,19 @@ REST_REGISTRATION = {
 }
 
 SWAGGER_SETTINGS = {
-   'SECURITY_DEFINITIONS': {
-      'Bearer': {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
             'type': 'apiKey',
             'name': 'Authorization',
             'in': 'header'
-      }
-   }
+        }
+    }
 }
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
 STATIC_URL = '/static/'
+# Place static in the same location as webpack build files
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = ()
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
