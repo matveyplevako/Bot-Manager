@@ -24,15 +24,16 @@ Deployed on custom VPS [swagger](http://84.201.152.104:8000/swagger/)
 
 ## Architecture
 ### Webhooks
-Because of the number of simultaneous running bots, polling will be inefficient.
-Instead of polling telegram server for updates, telegram allows setting up a webhook to receive updates.
-Webhook allows for lower network usage and faster updates.
+Because of possible number of simultaneous running bots, polling will be inefficient.
+
+Instead of polling, telegram allows setting up a webhook to receive updates.
+Webhooks allow lower network usage and faster updates.
 
 ### Telegram bot API
 Default telegram server allows only https connections with SSL certificate 
 and limits available ports. \
 [Telegram bot API](https://github.com/tdlib/telegram-bot-api) server is easier to set up, as it allows 
-http connections, and it is possible to receive webhook updates on any host:port. 
+http connections, and it is possible to receive webhook updates on any host:port.
 
 ### Diagram
 ![](https://i.imgur.com/JsYBdma.png)
