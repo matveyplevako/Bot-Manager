@@ -25,6 +25,19 @@ class TelegramBotViewSet(mixins.CreateModelMixin,
                          mixins.ListModelMixin,
                          mixins.DestroyModelMixin,
                          GenericViewSet):
+    """
+        retrieve:
+            Return name and bot token.
+
+        list:
+            Returns list of running bots.
+
+        create:
+            Add new bot.
+
+        delete:
+            Stop bot and remove entity.
+    """
 
     queryset = TelegramBotModel.objects
     permission_classes = [IsAuthenticated, IsTheOwnerOf]
@@ -47,9 +60,10 @@ class TelegramBotViewSet(mixins.CreateModelMixin,
                 return Response({"error": "Limit of 5 bots per user is reached"},
                                 status=status.HTTP_403_FORBIDDEN)
 
+            # set webhook
             token = serializer.validated_data["token"]
             telegram_response = set_webhook(token)
-            if not telegram_response["ok"]:
+            if not telegram_response["ok"]:  # if token was invalid
                 return Response(telegram_response["description"], status=status.HTTP_400_BAD_REQUEST)
             self.perform_create(serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -68,7 +82,8 @@ class TelegramBotViewSet(mixins.CreateModelMixin,
 @api_view(['POST'])
 def bot_action(request, bot_token):
     """
-    List all code snippets, or create a new snippet.
+    This endpoint is used for receiving updates from telegram webhook.
+    Called each time when new message arrives.
     """
     if request.method == 'POST':
         process_update(request.body.decode(), bot_token)
