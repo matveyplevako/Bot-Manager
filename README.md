@@ -37,7 +37,16 @@ http connections, and it is possible to receive webhook updates on any host:port
 ### Diagram
 ![](https://i.imgur.com/JsYBdma.png)
 
-## How to run?
+## How to use?
+1. Obtain new token for telegram bot from Botfather. 
+2. Open [swagger](http://84.201.152.104:8000/swagger/) 
+3. Register using rest-auth/register endpoint
+4. Click "Authorize" in the top left and Paste received token as "Token YOUR_TOKEN" 
+5. Using telegram-bot endpoint post your bot name and token
+6. Now your bot will respond with the same message
+7. To delete your bot use delete method on telegram-bot.
+
+## How to deploy?
 
 1. clone this repo
    `git clone https://github.com/matveyplevako/Bot-Manager.git`
