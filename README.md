@@ -2,7 +2,7 @@
 
 Django backend for managing bots.
 
-Deployed on custom VPS [swagger](http://84.201.152.104:8000/swagger/)
+Deployed on custom VPS [swagger](http://35.228.13.218:8000/swagger/)
 
 ## API Endpoints
 
@@ -40,7 +40,7 @@ http connections, and it is possible to receive webhook updates on any host:port
 
 ## How to use?
 1. Obtain new token for telegram bot from Botfather. 
-2. Open [swagger](http://84.201.152.104:8000/swagger/) 
+2. Open [swagger](http://35.228.13.218:8000/swagger/) 
 3. Register using rest-auth/register endpoint
 4. Click "Authorize" in the top left and Paste received token as "Token YOUR_TOKEN" 
 5. Using telegram-bot endpoint post your bot name and token
@@ -77,11 +77,11 @@ POSTGRES_DB=
 TELEGRAM_API_ID=3560000
 TELEGRAM_API_HASH=77e505cf4162944b6b3ba36000000000
 
-ALLOWED_HOST="84.201.152.104"
+ALLOWED_HOST="35.228.13.218"
 DJANGO_SECRET="123456secret123456"
 TELEGRAM_BOT_SERVER_HOST="http://telegram-bot-server"
 TELEGRAM_BOT_SERVER_PORT="8081"
-WEBHOOK_HOST="http://84.201.152.104"
+WEBHOOK_HOST="http://35.228.13.218"
 WEBHOOK_PORT="80"
 
 POSTGRES_HOST="postgres"
