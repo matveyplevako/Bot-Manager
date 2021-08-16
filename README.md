@@ -2,7 +2,7 @@
 
 Django backend for managing bots.
 
-Deployed on custom VPS [swagger](http://35.228.13.218:8000/swagger/)
+Deployed on custom VPS
 
 ## API Endpoints
 
